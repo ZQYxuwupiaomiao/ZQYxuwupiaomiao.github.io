@@ -166,7 +166,67 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p></p><h1 align="center">文本中获取想要的内容并添加点击事件</h1><br>最近项目添加新需求，需要获取文本中的链接，标注并跳转webView,就撸了个简单的demo，随后再修改，是用swift写的。<a href="https://github.com/zqyxuwupiaomiao/GetURLAndAddClick" title="demo" target="_blank" rel="external">github demo</a><p></p>
+<p>##1、把工具类倒入项目添加需要的代码<br>把 <strong>ZQYTapLabbel.swift</strong>   <strong>ZQYExtension.swift</strong>  <strong>WPAttributedStyleAction.swift</strong>这三个类倒入项目，创建ZQYTapLabbel即可如下：</p>
+<pre><code>override func viewDidLoad() {
+    super.viewDidLoad()
+    self.title = &quot;根视图&quot;
+    //创建ZQYTapLabbel这个lable标记需要到内容并添加了点击事件
+    let label = ZQYTapLabbel(frame: CGRect(x: 50,y: 100,width: 300,height: 100));
+    label.numberOfLines = 0;
+    let string:NSString = &quot;www.baidu.com你猜这是啥，132343243.45t5t5猜对有奖啊，https://www.github.com&quot;;
+    label.text = string as String;
+    label.attributedText = label.text?.attributedWithStyleBook();
+    self.view.addSubview(label);
+    //接受通知监听
+    NotificationCenter.default.addObserver(self, selector:#selector(didMsgRecv(notification:)),
+                                           name: NSNotification.Name(rawValue: &quot;sendInfoToVC&quot;), object: nil)
+}
+//处理事件
+func didMsgRecv(notification:NSNotification){
+    let webView = ZQYWebViewController()
+    webView.url = notification.object as? String
+    self.navigationController?.pushViewController(webView, animated: true)
+}
+</code></pre><p>##2、在ZQYExtension.swift类中修改，添加自己需要的需求<br>只需要修改String扩展中<strong>attributedWithStyleBook</strong>函数,代码加注释如下：</p>
+<pre><code>func attributedWithStyleBook() -&gt; NSAttributedString {
+    let mStr = (self as NSString).mutableCopy()
+    let attributeString = NSMutableAttributedString(string:mStr as! String)
+    do {
+        /*
+         * 我这里是用正则匹配连接，可能不太全面，如有好的请告知。
+         * 若是想标注某个词或者某个字就把下面的正则表达式换成需要标注的内容
+         * 例如 regulaStr = &quot;你猜这是啥&quot;
+         */
+        let regulaStr = &quot;((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&amp;*+?:_/=&lt;&gt;]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&amp;*+?:_/=&lt;&gt;]*)?)&quot;;
 
+        let regex = try NSRegularExpression(pattern: regulaStr, options:.caseInsensitive)
+        let arrayOfAllMatches = regex.matches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location:0,length:(self as NSString).length))
+        arrayOfAllMatches.forEach({ (match) in
+            let subStringForMatch = (self as NSString).substring(with: match.range)
+            //在这个字典做自己特殊修改，添加自己想要的属性
+            let styleDic = [&quot;body&quot;:UIFont(name:&quot;HelveticaNeue&quot;,size:20.0)!,
+                            subStringForMatch:WPAttributedStyleAction.styledActionWithAction {
+                                /**
+                                 * 为需要标示的内容绑定了点击事件
+                                 * 若是点击的区域是标记包含的区域在这里做处理你可以用自己想要的方式处理，我这里图省事和方便就用KVO，可能性能不太好。
+                                 */
+                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: &quot;sendInfoToVC&quot;), object: subStringForMatch, userInfo: nil)
+                },
+                            &quot;link&quot;:UIColor.orange
+            ] as [String : Any]
+            let bodyStyle = styleDic[&quot;body&quot;]
+            if let bodyStyle = bodyStyle as? NSObject{
+                self.styleAttributedString(attributeString: attributeString, range: NSRange(location: 0, length: attributeString.length), style: bodyStyle, styleBook: styleDic as NSDictionary)
+            }
+            if let style = styleDic[subStringForMatch] as? NSObject{
+                self.styleAttributedString(attributeString: attributeString, range: match.range, style: style, styleBook: styleDic as NSDictionary)
+            }
+        })
+    } catch  {
+    }
+    return attributeString;
+}
+</code></pre>
       
 
       
