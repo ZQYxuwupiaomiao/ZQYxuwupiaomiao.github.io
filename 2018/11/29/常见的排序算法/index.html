@@ -9,18 +9,18 @@
   <title>基础排序算法之swift | 虛無縹緲</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="最近稍微空闲，发现之前熟悉的基础排序和查找算法忘的差不多了，原理都还能说得清，动手就有些含糊了，所以就有了重新认识一下的想法，顺便复习一下数据结构。
-1、快速排序算法算法步骤：1 、从数列中挑出一个元素，称为 “基准”，2、 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区操作">
+1、快速排序算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基础排序算法之swift">
 <meta property="og:url" content="http://xuwupiaomiao.com/2018/11/29/常见的排序算法/index.html">
 <meta property="og:site_name" content="虛無縹緲">
 <meta property="og:description" content="最近稍微空闲，发现之前熟悉的基础排序和查找算法忘的差不多了，原理都还能说得清，动手就有些含糊了，所以就有了重新认识一下的想法，顺便复习一下数据结构。
-1、快速排序算法算法步骤：1 、从数列中挑出一个元素，称为 “基准”，2、 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区操作">
-<meta property="og:updated_time" content="2018-11-30T07:49:54.938Z">
+1、快速排序算法">
+<meta property="og:updated_time" content="2018-11-30T07:57:14.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基础排序算法之swift">
 <meta name="twitter:description" content="最近稍微空闲，发现之前熟悉的基础排序和查找算法忘的差不多了，原理都还能说得清，动手就有些含糊了，所以就有了重新认识一下的想法，顺便复习一下数据结构。
-1、快速排序算法算法步骤：1 、从数列中挑出一个元素，称为 “基准”，2、 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区操作">
+1、快速排序算法">
   
     <link rel="alternative" href="/atom.xml" title="虛無縹緲" type="application/atom+xml">
   
@@ -181,9 +181,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>最近稍微空闲，发现之前熟悉的基础排序和查找算法忘的差不多了，原理都还能说得清，动手就有些含糊了，所以就有了重新认识一下的想法，顺便复习一下数据结构。</p>
-<h1 id="1、快速排序算法"><a href="#1、快速排序算法" class="headerlink" title="1、快速排序算法"></a>1、快速排序算法</h1><h2 id="算法步骤："><a href="#算法步骤：" class="headerlink" title="算法步骤："></a>算法步骤：</h2><p>1 、从数列中挑出一个元素，称为 “基准”，<br>2、 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区操作。<br>3 、递归地把小于基准值元素的子数列和大于基准值元素的子数列排序。</p>
-<h2 id="code："><a href="#code：" class="headerlink" title="code："></a>code：</h2><p>‘’’</p>
-<pre><code>  /**
+<h1 id="1、快速排序算法"><a href="#1、快速排序算法" class="headerlink" title="1、快速排序算法"></a>1、快速排序算法</h1><a id="more"></a>
+<h2 id="算法步骤："><a href="#算法步骤：" class="headerlink" title="算法步骤："></a>算法步骤：</h2><p>1 、从数列中挑出一个元素，称为 “基准”，<br>2、 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区操作。<br>3 、递归地把小于基准值元素的子数列和大于基准值元素的子数列排序。</p>
+<h2 id="code："><a href="#code：" class="headerlink" title="code："></a>code：</h2><pre><code>  /**
  * 快速排序
  *
  */
@@ -219,7 +219,7 @@ func quickSortPartition(array: inout [Int], pivotIndex: Int, endIndex: Int) -&gt
     }
     return currentPivotIndex
 }
-</code></pre><p>‘’’<br>这是自己的拙见，欢迎指正，🙏。</p>
+</code></pre><p>这是自己的拙见，欢迎指正，🙏。</p>
 
       
 
