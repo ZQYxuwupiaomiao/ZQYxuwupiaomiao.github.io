@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="虛無縹緲">
 <meta property="og:description" content="最近稍微空闲，发现之前熟悉的基础排序和查找算法忘的差不多了，原理都还能说得清，动手就有些含糊了，所以就有了重新认识一下的想法，顺便复习一下数据结构。
 1、快速排序算法快速排序在平均状况下，排序 n 个项目要Ο(n log n)次比较。在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log n) 算法更快，因为它的内部循环可以在大部分的架构上很有效率地被">
-<meta property="og:updated_time" content="2018-12-15T11:55:56.307Z">
+<meta property="og:updated_time" content="2018-12-16T06:10:23.813Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基础排序算法之swift">
 <meta name="twitter:description" content="最近稍微空闲，发现之前熟悉的基础排序和查找算法忘的差不多了，原理都还能说得清，动手就有些含糊了，所以就有了重新认识一下的想法，顺便复习一下数据结构。
@@ -269,6 +269,43 @@ func mergeSort(array: inout [Int]) {
             }
             a = a + 4;
         }
+    }
+}
+</code></pre><h1 id="4、冒泡排序"><a href="#4、冒泡排序" class="headerlink" title="4、冒泡排序"></a>4、冒泡排序</h1><p>冒泡排序（Bubble Sort），是一种计算机科学领域的较简单的排序算法。<br>它重复地走访过要排序的元素列，依次比较两个相邻的元素，如果他们的顺序（如从大到小、首字母从A到Z）错误就把他们交换过来。走访元素的工作是重复地进行直到没有相邻元素需要交换，也就是说该元素已经排序完成。<br>这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端（升序或降序排列），就如同碳酸饮料中二氧化碳的气泡最终会上浮到顶端一样，故名“冒泡排序”。</p>
+<h2 id="算法步骤：-3"><a href="#算法步骤：-3" class="headerlink" title="算法步骤："></a>算法步骤：</h2><p>冒泡排序算法的原理如下：<br>     比较相邻的元素。如果第一个比第二个大，就交换他们两个。<br>     对每一对相邻元素做同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。<br>     针对所有的元素重复以上的步骤，除了最后一个。<br>     持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</p>
+<h2 id="code：-3"><a href="#code：-3" class="headerlink" title="code："></a>code：</h2><pre><code>//MARK: 冒泡排序
+func bubbleSort(array: inout [Int]) {
+    let n = array.count - 2
+    for i in 0 ... n {
+        for j in 0 ... (n - i) {
+            if array[j] &gt; array[j + 1]  {
+                array.swapAt(j, j + 1)
+            }
+        }
+    }
+}
+</code></pre><h1 id="5、希尔排序"><a href="#5、希尔排序" class="headerlink" title="5、希尔排序"></a>5、希尔排序</h1><p>希尔排序(Shell’s Sort)是插入排序的一种又称“缩小增量排序”（Diminishing Increment Sort），是直接插入排序算法的一种更高效的改进版本。希尔排序是非稳定排序算法。希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。</p>
+<h2 id="算法步骤：-4"><a href="#算法步骤：-4" class="headerlink" title="算法步骤："></a>算法步骤：</h2><p>1、取一个小于n的整数d1作为第一个增量，把文件的全部记录分组。所有距离为d1的倍数的记录放在同一个组中。先在各组内进行直接插入排序；<br>2、取第二个增量d2&lt;d1重复上述的分组和排序，直至所取的增量<br>=1(&lt;…&lt;d2&lt;d1)，即所有记录放在同一组中进行直接插入排序为止。</p>
+<h2 id="code：-4"><a href="#code：-4" class="headerlink" title="code："></a>code：</h2><pre><code>//MARK: 希尔排序
+func shellSort(array: inout [Int]) {
+    //增量
+    var increment = array.count / 2
+    while increment &gt; 0 {
+        for i in 0 ... increment - 1 {
+            var a = i
+            //每次增量进行直接插入排序
+            while a &lt; array.count {
+                var currentINC = increment;
+                while a + currentINC &lt; array.count {
+                    if array[a] &gt; array[a + currentINC]  {
+                        array.swapAt(a, a + currentINC)
+                    }
+                    currentINC += increment
+                }
+                a += increment
+            }
+        }
+        increment = increment / 2
     }
 }
 </code></pre><p>这是自己的拙见，欢迎指正，🙏。</p>
