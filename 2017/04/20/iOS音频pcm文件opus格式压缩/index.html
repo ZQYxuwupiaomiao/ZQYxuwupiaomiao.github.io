@@ -16,7 +16,7 @@
 <meta property="og:description" content="因做语音在线识别就了解一下pcm做opus压缩。">
 <meta property="og:image" content="http://xuwupiaomiao.com/images/opus.png">
 <meta property="og:image" content="http://xuwupiaomiao.com/images/canshu.png">
-<meta property="og:updated_time" content="2019-04-14T13:00:00.667Z">
+<meta property="og:updated_time" content="2019-04-14T13:14:36.695Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS音频pcm文件opus格式压缩">
 <meta name="twitter:description" content="因做语音在线识别就了解一下pcm做opus压缩。">
@@ -202,20 +202,7 @@ opus_encoder_ctl(enc, OPUS_SET_PACKET_LOSS_PERC(0));
 opus_encoder_ctl(enc, OPUS_SET_SIGNAL(OPUS_SIGNAL_VOICE));//信号
 </code></pre><p>##2、压缩函数的函数</p>
 <pre><code>//传入要压缩的数据
-</code></pre><ul>
-<li>(NSData <em>)encodePCMData:(NSData</em>)data{<br>  return  [self encode:(short *)[data bytes] length:[data length]];<br>}</li>
-<li>(NSData <em>)encode:(short </em>)pcmBuffer length:(NSInteger)lengthOfShorts{<br>  opus_int16 <em>PCMPtr = pcmBuffer;<br>  int PCMSize = (int)lengthOfShorts / sizeof(opus_int16);<br>  opus_int16 </em>PCMEnd = PCMPtr + PCMSize;<br>  NSMutableData *mutData = [NSMutableData data];<br>  unsigned char encodedPacket[MAX_PACKET_BYTES];<br>  // 记录opus块大小<br>  OPUS_DATA_SIZE_T encodedBytes = 0;<br>  while (PCMPtr + WB_FRAME_SIZE &lt; PCMEnd) {<pre><code>encodedBytes = opus_encode(enc, PCMPtr, WB_FRAME_SIZE, encodedPacket, MAX_PACKET_BYTES);
-if (encodedBytes &lt;= 0) {
-    return nil;
-}
-// 大端转小端 这个要根据解析要求是大段还是小段存储
-</code></pre>//        encodedBytes = CFSwapInt32HostToBig(encodedBytes)<pre><code>// 保存opus块大小
-[mutData appendBytes:&amp;encodedBytes length:sizeof(encodedBytes)];
-// 保存opus数据
-[mutData appendBytes:encodedPacket length:encodedBytes];
-PCMPtr += WB_FRAME_SIZE;
-</code></pre>  }<br>  return mutData.length &gt; 0 ? mutData : nil;<br>}</li>
-</ul>
+</code></pre><p>-(NSData <em>)encodePCMData:(NSData</em>)data{<br>    return  [self encode:(short <em>)[data bytes] length:[data length]];<br>}<br>-(NSData </em>)encode:(short <em>)pcmBuffer length:(NSInteger)lengthOfShorts{<br>    opus_int16 </em>PCMPtr = pcmBuffer;<br>    int PCMSize = (int)lengthOfShorts / sizeof(opus_int16);<br>    opus_int16 <em>PCMEnd = PCMPtr + PCMSize;<br>    NSMutableData </em>mutData = [NSMutableData data];<br>    unsigned char encodedPacket[MAX_PACKET_BYTES];<br>    // 记录opus块大小<br>    OPUS_DATA_SIZE_T encodedBytes = 0;<br>    while (PCMPtr + WB_FRAME_SIZE &lt; PCMEnd) {<br>        encodedBytes = opus_encode(enc, PCMPtr, WB_FRAME_SIZE, encodedPacket, MAX_PACKET_BYTES);<br>        if (encodedBytes &lt;= 0) {<br>            return nil;<br>        }<br>        // 大端转小端 这个要根据解析要求是大段还是小段存储<br>       //  encodedBytes = CFSwapInt32HostToBig(encodedBytes)<br>        // 保存opus块大小<br>        [mutData appendBytes:&amp;encodedBytes length:sizeof(encodedBytes)];<br>        // 保存opus数据<br>        [mutData appendBytes:encodedPacket length:encodedBytes];<br>        PCMPtr += WB_FRAME_SIZE;<br>    }<br>    return mutData.length &gt; 0 ? mutData : nil;<br>}</p>
 <p>这是自己的拙见，欢迎指正，🙏。</p>
 
       
