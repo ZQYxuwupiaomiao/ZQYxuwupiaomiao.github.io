@@ -6,21 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xuwupiaomiao.com">
-  <title>文本中获取想要的内容添加点击事件 | 虛無縹緲</title>
+  <title>iOS音频pcm文件opus格式压缩 | 虛無縹緲</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="文本中获取想要的内容并添加点击事件最近项目添加新需求，需要获取文本中的链接，标注并跳转webView,就撸了个简单的demo，随后再修改，是用swift写的。github demo
-1、把工具类倒入项目添加需要的代码">
+  <meta name="description" content="因做语音在线识别就了解一下pcm做opus压缩。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文本中获取想要的内容添加点击事件">
-<meta property="og:url" content="http://xuwupiaomiao.com/2017/04/06/文本中获取想要的内容添加点击事件/index.html">
+<meta property="og:title" content="iOS音频pcm文件opus格式压缩">
+<meta property="og:url" content="http://xuwupiaomiao.com/2017/04/20/iOS音频pcm文件opus格式压缩/index.html">
 <meta property="og:site_name" content="虛無縹緲">
-<meta property="og:description" content="文本中获取想要的内容并添加点击事件最近项目添加新需求，需要获取文本中的链接，标注并跳转webView,就撸了个简单的demo，随后再修改，是用swift写的。github demo
-1、把工具类倒入项目添加需要的代码">
-<meta property="og:updated_time" content="2019-04-14T12:51:00.614Z">
+<meta property="og:description" content="因做语音在线识别就了解一下pcm做opus压缩。">
+<meta property="og:image" content="http://xuwupiaomiao.com/images/opus.png">
+<meta property="og:image" content="http://xuwupiaomiao.com/images/canshu.png">
+<meta property="og:updated_time" content="2019-04-14T13:00:00.667Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文本中获取想要的内容添加点击事件">
-<meta name="twitter:description" content="文本中获取想要的内容并添加点击事件最近项目添加新需求，需要获取文本中的链接，标注并跳转webView,就撸了个简单的demo，随后再修改，是用swift写的。github demo
-1、把工具类倒入项目添加需要的代码">
+<meta name="twitter:title" content="iOS音频pcm文件opus格式压缩">
+<meta name="twitter:description" content="因做语音在线识别就了解一下pcm做opus压缩。">
+<meta name="twitter:image" content="http://xuwupiaomiao.com/images/opus.png">
   
     <link rel="alternative" href="/atom.xml" title="虛無縹緲" type="application/atom+xml">
   
@@ -160,89 +160,64 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-文本中获取想要的内容添加点击事件" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-iOS音频pcm文件opus格式压缩" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      文本中获取想要的内容添加点击事件
+      iOS音频pcm文件opus格式压缩
     </h1>
   
 
         
-        <a href="/2017/04/06/文本中获取想要的内容添加点击事件/" class="archive-article-date">
-  	<time datetime="2017-04-06T08:53:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-06</time>
+        <a href="/2017/04/20/iOS音频pcm文件opus格式压缩/" class="archive-article-date">
+  	<time datetime="2017-04-20T06:48:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-20</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p></p><h1 align="center">文本中获取想要的内容并添加点击事件</h1><br>最近项目添加新需求，需要获取文本中的链接，标注并跳转webView,就撸了个简单的demo，随后再修改，是用swift写的。<a href="https://github.com/zqyxuwupiaomiao/GetURLAndAddClick" title="demo" target="_blank" rel="external">github demo</a><p></p>
-<h2 id="1、把工具类倒入项目添加需要的代码"><a href="#1、把工具类倒入项目添加需要的代码" class="headerlink" title="1、把工具类倒入项目添加需要的代码"></a>1、把工具类倒入项目添加需要的代码</h2><a id="more"></a>
-<p>把 <strong>ZQYTapLabbel.swift</strong>   <strong>ZQYExtension.swift</strong>  <strong>WPAttributedStyleAction.swift</strong>这三个类倒入项目，创建ZQYTapLabbel即可如下：</p>
-<pre><code>override func viewDidLoad() {
-    super.viewDidLoad()
-    self.title = &quot;根视图&quot;
-    //创建ZQYTapLabbel这个lable标记需要到内容并添加了点击事件
-    let label = ZQYTapLabbel(frame: CGRect(x: 50,y: 100,width: 300,height: 100));
-    label.numberOfLines = 0;
-    let string:NSString = &quot;www.baidu.com你猜这是啥，132343243.45t5t5猜对有奖啊，https://www.github.com&quot;;
-    label.text = string as String;
-    label.attributedText = label.text?.attributedWithStyleBook();
-    self.view.addSubview(label);
-    //接受通知监听
-    NotificationCenter.default.addObserver(self, selector:#selector(didMsgRecv(notification:)),
-                                           name: NSNotification.Name(rawValue: &quot;sendInfoToVC&quot;), object: nil)
+        <p>因做语音在线识别就了解一下pcm做opus压缩。<br><a id="more"></a><br>opus是一种声音编码格式，Opus的前身是celt编码器。是由IETF开发，适用于网络上的实时声音传输，标准格式为RFC 6716。这是一种有损的声音编码格式。</p>
+<p>#一、首先获取opus压缩的iOS库<br>先从GitHub下载国外大神<a href="https://github.com/chrisballinger/Opus-iOS" target="_blank" rel="external">Opus-iOS编译工程</a>，然后修改需要运行的脚本文件 （build-libopus.sh）</p>
+<p>##1、一般需要修改这几个地方</p>
+<p>VERSION=”1.3” ##当前编译opus版本基本上不用修改<br>SDKVERSION=”10.2” ##你用的xcode sdk版本<br>MINIOSVERSION=”8.0” ##最低支持的iOS系统</p>
+<p>##2、在 build-libopus.sh 文件中107行  的脚本代码 EXTRA_CONFIG=””  修改为 EXTRA_CONFIG=”–host=x86_64”  注意,这个地方是和电脑的CPU相关的</p>
+<p>##3、最后编译脚本生成需要的库；</p>
+<pre><code>$ ./build-libopus.sh
+</code></pre><p>运行成功下面文件夹里面的就是需要的库，至于怎么放进工程随自己喜好。<br><img src="/images/opus.png" alt="图片" title="图片"></p>
+<p>#二、获取pcm（纯语音数据）语音数据<br>获取pcm格式的语音数据,这里的pcm数据的采样率要注意要和后面opus压缩的采样率一样。</p>
+<p>#三、opus压缩pcm<br>认识几个参数<br><img src="/images/canshu.png" alt="图片" title="图片"></p>
+<p>##1、设置参数</p>
+<pre><code>   enc = opus_encoder_create(kDefaultSampleRate, 1, OPUS_APPLICATION_VOIP, &amp;error);//(采样率，声道数,,)
+dec = opus_decoder_create(kDefaultSampleRate, 1, &amp;error);
+opus_encoder_ctl(enc, OPUS_SET_BITRATE(kDefaultSampleRate));//比特率
+opus_encoder_ctl(enc, OPUS_SET_BANDWIDTH(OPUS_AUTO));//OPUS_BANDWIDTH_NARROWBAND 宽带窄带
+opus_encoder_ctl(enc, OPUS_SET_VBR(0));
+opus_encoder_ctl(enc, OPUS_SET_VBR_CONSTRAINT(1));
+opus_encoder_ctl(enc, OPUS_SET_COMPLEXITY(8));//录制质量 1-10
+opus_encoder_ctl(enc, OPUS_SET_PACKET_LOSS_PERC(0));
+opus_encoder_ctl(enc, OPUS_SET_SIGNAL(OPUS_SIGNAL_VOICE));//信号
+</code></pre><p>##2、压缩函数的函数</p>
+<pre><code>//传入要压缩的数据
+</code></pre><ul>
+<li>(NSData <em>)encodePCMData:(NSData</em>)data{<br>  return  [self encode:(short *)[data bytes] length:[data length]];<br>}</li>
+<li>(NSData <em>)encode:(short </em>)pcmBuffer length:(NSInteger)lengthOfShorts{<br>  opus_int16 <em>PCMPtr = pcmBuffer;<br>  int PCMSize = (int)lengthOfShorts / sizeof(opus_int16);<br>  opus_int16 </em>PCMEnd = PCMPtr + PCMSize;<br>  NSMutableData *mutData = [NSMutableData data];<br>  unsigned char encodedPacket[MAX_PACKET_BYTES];<br>  // 记录opus块大小<br>  OPUS_DATA_SIZE_T encodedBytes = 0;<br>  while (PCMPtr + WB_FRAME_SIZE &lt; PCMEnd) {<pre><code>encodedBytes = opus_encode(enc, PCMPtr, WB_FRAME_SIZE, encodedPacket, MAX_PACKET_BYTES);
+if (encodedBytes &lt;= 0) {
+    return nil;
 }
-//处理事件
-func didMsgRecv(notification:NSNotification){
-    let webView = ZQYWebViewController()
-    webView.url = notification.object as? String
-    self.navigationController?.pushViewController(webView, animated: true)
-}
-</code></pre><h2 id="2、在ZQYExtension-swift类中修改，添加自己需要的需求"><a href="#2、在ZQYExtension-swift类中修改，添加自己需要的需求" class="headerlink" title="2、在ZQYExtension.swift类中修改，添加自己需要的需求"></a>2、在ZQYExtension.swift类中修改，添加自己需要的需求</h2><p>只需要修改String扩展中<strong>attributedWithStyleBook</strong>函数,代码加注释如下：</p>
-<pre><code>func attributedWithStyleBook() -&gt; NSAttributedString {
-    let mStr = (self as NSString).mutableCopy()
-    let attributeString = NSMutableAttributedString(string:mStr as! String)
-    do {
-        /*
-         * 我这里是用正则匹配连接，可能不太全面，如有好的请告知。
-         * 若是想标注某个词或者某个字就把下面的正则表达式换成需要标注的内容
-         * 例如 regulaStr = &quot;你猜这是啥&quot;
-         */
-        let regulaStr = &quot;((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&amp;*+?:_/=&lt;&gt;]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&amp;*+?:_/=&lt;&gt;]*)?)&quot;;
+// 大端转小端 这个要根据解析要求是大段还是小段存储
+</code></pre>//        encodedBytes = CFSwapInt32HostToBig(encodedBytes)<pre><code>// 保存opus块大小
+[mutData appendBytes:&amp;encodedBytes length:sizeof(encodedBytes)];
+// 保存opus数据
+[mutData appendBytes:encodedPacket length:encodedBytes];
+PCMPtr += WB_FRAME_SIZE;
+</code></pre>  }<br>  return mutData.length &gt; 0 ? mutData : nil;<br>}</li>
+</ul>
+<p>这是自己的拙见，欢迎指正，🙏。</p>
 
-        let regex = try NSRegularExpression(pattern: regulaStr, options:.caseInsensitive)
-        let arrayOfAllMatches = regex.matches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location:0,length:(self as NSString).length))
-        arrayOfAllMatches.forEach({ (match) in
-            let subStringForMatch = (self as NSString).substring(with: match.range)
-            //在这个字典做自己特殊修改，添加自己想要的属性
-            let styleDic = [&quot;body&quot;:UIFont(name:&quot;HelveticaNeue&quot;,size:20.0)!,
-                            subStringForMatch:WPAttributedStyleAction.styledActionWithAction {
-                                /**
-                                 * 为需要标示的内容绑定了点击事件
-                                 * 若是点击的区域是标记包含的区域在这里做处理你可以用自己想要的方式处理，我这里图省事和方便就用KVO，可能性能不太好。
-                                 */
-                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: &quot;sendInfoToVC&quot;), object: subStringForMatch, userInfo: nil)
-                },
-                            &quot;link&quot;:UIColor.orange
-            ] as [String : Any]
-            let bodyStyle = styleDic[&quot;body&quot;]
-            if let bodyStyle = bodyStyle as? NSObject{
-                self.styleAttributedString(attributeString: attributeString, range: NSRange(location: 0, length: attributeString.length), style: bodyStyle, styleBook: styleDic as NSDictionary)
-            }
-            if let style = styleDic[subStringForMatch] as? NSObject{
-                self.styleAttributedString(attributeString: attributeString, range: match.range, style: style, styleBook: styleDic as NSDictionary)
-            }
-        })
-    } catch  {
-    }
-    return attributeString;
-}
-</code></pre>
       
 
       
@@ -321,7 +296,7 @@ func didMsgRecv(notification:NSNotification){
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://xuwupiaomiao.com/2017/04/06/文本中获取想要的内容添加点击事件/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://xuwupiaomiao.com/2017/04/20/iOS音频pcm文件opus格式压缩/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -335,18 +310,18 @@ func didMsgRecv(notification:NSNotification){
   
 <nav id="article-nav">
   
-    <a href="/2017/04/20/自定义相机，截取需要的部分存储到相册/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/11/29/常见的排序算法/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          自定义相机，截取需要的部分存储到相册
+          基础排序算法之swift
         
       </div>
     </a>
   
   
-    <a href="/1970/01/01/个人博客之初搭建/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">个人博客之初搭建</div>
+    <a href="/2017/04/20/自定义相机，截取需要的部分存储到相册/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">自定义相机，截取需要的部分存储到相册</div>
       <i class="icon-circle-right"></i>
     </a>
   
