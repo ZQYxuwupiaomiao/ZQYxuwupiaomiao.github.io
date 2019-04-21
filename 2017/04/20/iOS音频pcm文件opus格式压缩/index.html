@@ -16,7 +16,7 @@
 <meta property="og:description" content="因做语音在线识别就了解一下pcm做opus压缩。">
 <meta property="og:image" content="http://xuwupiaomiao.com/images/opus.png">
 <meta property="og:image" content="http://xuwupiaomiao.com/images/canshu.png">
-<meta property="og:updated_time" content="2019-04-14T13:32:26.119Z">
+<meta property="og:updated_time" content="2019-04-21T03:28:50.370Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS音频pcm文件opus格式压缩">
 <meta name="twitter:description" content="因做语音在线识别就了解一下pcm做opus压缩。">
@@ -188,8 +188,28 @@
 <p>##3、最后编译脚本生成需要的库；</p>
 <pre><code>$ ./build-libopus.sh
 </code></pre><p>运行成功下面文件夹里面的就是需要的库，至于怎么放进工程随自己喜好。<br><img src="/images/opus.png" alt="图片" title="图片"></p>
-<p>#二、获取pcm（纯语音数据）语音数据<br>获取pcm格式的语音数据,这里的pcm数据的采样率要注意要和后面opus压缩的采样率一样。</p>
-<p>#三、opus压缩pcm<br>认识几个参数<br><img src="/images/canshu.png" alt="图片" title="图片"></p>
+<p>#二、获取pcm（纯语音数据）语音数据<br>获取pcm格式的语音数据,这里的pcm数据的采样率要注意要和后面opus压缩的采样率一样。<br>我们做的语音在线识别，边录音变上传边识别。用的<audiotoolbox audiotoolbox.h="">框架的AudioQueue和AudioStream，注意采样率，可以根据自己需要选择适合自己的获取pcm方式，参数如下；<br>    {<br>        //如果录音时同时需要播放媒体，那么必须加上这两行代码<br>        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];<br>        [[AVAudioSession sharedInstance] setActive:YES error:nil];</audiotoolbox></p>
+<pre><code>    memset(&amp;_recordFormat, 0, sizeof(_recordFormat));
+    _recordFormat.mSampleRate = kDefaultSampleRate;
+    _recordFormat.mChannelsPerFrame = 1;
+    _recordFormat.mFormatID = kAudioFormatLinearPCM;
+    _recordFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+    _recordFormat.mBitsPerChannel = 16;
+    _recordFormat.mBytesPerPacket = _recordFormat.mBytesPerFrame = (_recordFormat.mBitsPerChannel / 8) * _recordFormat.mChannelsPerFrame;
+    _recordFormat.mFramesPerPacket = 1;
+    //初始化音频输入队列
+    AudioQueueNewInput(&amp;_recordFormat, inputBufferHandler, (__bridge void *)(self), NULL, NULL, 0, &amp;_audioQueue);
+    //计算估算的缓存区大小
+    int frames = (int)ceil(kDefaultBufferDurationSeconds * _recordFormat.mSampleRate);
+    int bufferByteSize = frames * _recordFormat.mBytesPerFrame;
+
+    //创建缓冲器
+    for (int i = 0; i &lt; QUEUE_BUFFER_SIZE; i++){
+        AudioQueueAllocateBuffer(_audioQueue, bufferByteSize, &amp;_audioBuffers[i]);
+        AudioQueueEnqueueBuffer(_audioQueue, _audioBuffers[i], 0, NULL);
+    }
+}
+</code></pre><p>#三、opus压缩pcm<br>认识几个参数<br><img src="/images/canshu.png" alt="图片" title="图片"></p>
 <p>##1、设置参数</p>
 <pre><code>   enc = opus_encoder_create(kDefaultSampleRate, 1, OPUS_APPLICATION_VOIP, &amp;error);//(采样率，声道数,,)
 dec = opus_decoder_create(kDefaultSampleRate, 1, &amp;error);
@@ -200,7 +220,7 @@ opus_encoder_ctl(enc, OPUS_SET_VBR_CONSTRAINT(1));
 opus_encoder_ctl(enc, OPUS_SET_COMPLEXITY(8));//录制质量 1-10
 opus_encoder_ctl(enc, OPUS_SET_PACKET_LOSS_PERC(0));
 opus_encoder_ctl(enc, OPUS_SET_SIGNAL(OPUS_SIGNAL_VOICE));//信号
-</code></pre><p>##2、压缩函数的函数</p>
+</code></pre><p>##2、压缩函数的函数以及返回值</p>
 <pre><code>//传入要压缩的数据
 
 -(NSData *)encodePCMData:(NSData*)data{
@@ -229,7 +249,7 @@ while (PCMPtr + WB_FRAME_SIZE &lt; PCMEnd) {
 }
 return mutData.length &gt; 0 ? mutData : nil;
 }
-</code></pre><p>这是自己的拙见，欢迎指正，🙏。</p>
+</code></pre><p>##3、解压函数的函数以及返回值<br>    -(NSData <em>)decodeOpusData:(NSData</em>)data{<br>    unsigned char <em>opusPtr = (unsigned char </em>)data.bytes;<br>    int opusSize = (int)data.length;<br>    unsigned char <em>opusEnd = opusPtr + opusSize;<br>    NSMutableData </em>mutData = [[NSMutableData alloc] init];<br>    opus_int16 decodedPacket[MAX_PACKET_BYTES];<br>    int decodedSamples = 0;<br>    // 保存opus块大小的数据<br>    OPUS_DATA_SIZE_T nBytes = 0;<br>    while (opusPtr &lt; opusEnd) {<br>        // 取出opus块大小的数据<br>        nBytes = <em>(OPUS_DATA_SIZE_T </em>)opusPtr;<br>        opusPtr += sizeof(nBytes);<br>        decodedSamples = opus_decode(dec, opusPtr, nBytes, decodedPacket, MAX_PACKET_BYTES, 0);<br>        if (decodedSamples &lt;= 0) {<br>            return nil;<br>        }<br>        [mutData appendBytes:decodedPacket length:decodedSamples * sizeof(opus_int16)];<br>        opusPtr += nBytes;<br>    }<br>    return mutData.length &gt; 0 ? mutData : nil;<br>}<br>以上是opus的压缩和解压，数据处理看自己需要；<br>这是自己的拙见，欢迎指正，🙏。</p>
 
       
 
